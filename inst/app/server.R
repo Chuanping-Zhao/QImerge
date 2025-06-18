@@ -3,40 +3,40 @@ server <- function(input, output, session) {
   # Reactive expressions to read each uploaded file
   sampleInfo <- reactive({
     req(input$sampleInfo)
-    read_data(input$sampleInfo$datapath)
+    QImerge::read_data(input$sampleInfo$datapath)
   })
   posExp <- reactive({
     req(input$posExp)
-    read_data(input$posExp$datapath)
+    QImerge::read_data(input$posExp$datapath)
   })
   posId <- reactive({
     req(input$posId)
-    read_data(input$posId$datapath)
+    QImerge::read_data(input$posId$datapath)
   })
   negExp <- reactive({
     req(input$negExp)
-    read_data(input$negExp$datapath)
+    QImerge::read_data(input$negExp$datapath)
   })
   negId <- reactive({
     req(input$negId)
-    read_data(input$negId$datapath)
+    QImerge::read_data(input$negId$datapath)
   })
 
   # Reactive expressions for merged results in each mode
   result_pos <- reactive({
     req(sampleInfo(), posExp(), posId())
-    easy_mergeMetabo(posExp(), posId(), mode = "pos", score_value = input$MS1_score_cutoff, sampleInfo())
+    QImerge::easy_mergeMetabo(posExp(), posId(), mode = "pos", score_value = input$MS1_score_cutoff, sampleInfo())
   })
   result_neg <- reactive({
     req(sampleInfo(), negExp(), negId())
-    easy_mergeMetabo(negExp(), negId(), mode = "neg", score_value = input$MS1_score_cutoff, sampleInfo())
+    QImerge::easy_mergeMetabo(negExp(), negId(), mode = "neg", score_value = input$MS1_score_cutoff, sampleInfo())
   })
 
   # Reactive for merged POS/NEG result (only when checkbox is TRUE)
   merged_result <- reactive({
     req(result_pos(), result_neg())
     if (input$merge_result) {
-      mergeMode(result_pos(), result_neg())
+      QImerge::mergeMode(result_pos(), result_neg())
     } else {
       NULL
     }
