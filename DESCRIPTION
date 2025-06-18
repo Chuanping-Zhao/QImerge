@@ -1,0 +1,18 @@
+Package: QImerge
+Type: Package
+Title: Metabolomic Data Merge Shiny Application
+Version: 0.1.0
+Authors@R: 
+    c(person("Chuanping", "Zhao", email = "1079957338@qq.com", role = c("aut", "cre")))
+Description: Provides a Shiny app for combining metabolite quantification (intensity) and identification results for positive and negative ion modes. 
+    The package includes functions to merge data tables.
+Depends: R (>= 4.1.0)
+Imports: 
+    shiny,
+    readxl,
+    data.table,
+    dplyr
+Encoding: UTF-8
+LazyData: true
+License: MIT
+RoxygenNote: 7.3.2
