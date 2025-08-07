@@ -58,21 +58,25 @@ easy_mergeMetabo <- function(dat_intensity, dat_identification, mode, score_valu
   annotationInfo <- annotationInfo[3:nrow(annotationInfo), ]
 
   # Extract raw intensity data and rename columns
-  dat_intensity_raw <- dat_intensity[, non_empty_indices[1]:(non_empty_indices[2] - 1)]
+  dat_intensity_raw=dat_intensity[,non_empty_indices[1]:(non_empty_indices[2]-1), drop = FALSE]
+  #dat_intensity_raw <- dat_intensity[, non_empty_indices[1]:(non_empty_indices[2] - 1)]
   colnames(dat_intensity_raw) <- dat_intensity_raw[2, ]   # second row contains sample names
-  dat_intensity_raw <- dat_intensity_raw[3:nrow(dat_intensity_raw), ]
+ # dat_intensity_raw <- dat_intensity_raw[3:nrow(dat_intensity_raw), ]
+  dat_intensity_raw=dat_intensity_raw[3:nrow(dat_intensity_raw),, drop = FALSE]
   dat_intensity_raw <- dat_intensity_raw |> dplyr::select(dplyr::all_of(sample_names$old.name))
-  colnames(dat_intensity_raw) <- paste0("Raw_", sample_names$Unique.name)
+  colnames(dat_intensity_raw) <- paste0("Norm_", sample_names$Unique.name)
   # Convert all raw intensities to numeric
   dat_intensity_raw[] <- lapply(dat_intensity_raw, as.numeric)
 
   # Extract normalized intensity data and rename columns
   # (Assumes the normalized intensity section has same number of columns as raw intensity section)
-  dat_intensity_norm <- dat_intensity[, non_empty_indices[2]:(non_empty_indices[2] + length(non_empty_indices[1]:(non_empty_indices[2] - 1)) - 1)]
+  #dat_intensity_norm <- dat_intensity[, non_empty_indices[2]:(non_empty_indices[2] + length(non_empty_indices[1]:(non_empty_indices[2] - 1)) - 1)]
+  dat_intensity_norm=dat_intensity[,non_empty_indices[2]:(non_empty_indices[2]+(length(non_empty_indices[1]:(non_empty_indices[2]-1))-1)), drop = FALSE]
   colnames(dat_intensity_norm) <- dat_intensity_norm[2, ]
-  dat_intensity_norm <- dat_intensity_norm[3:nrow(dat_intensity_norm), ]
+#  dat_intensity_norm <- dat_intensity_norm[3:nrow(dat_intensity_norm), ]
+  dat_intensity_norm=dat_intensity_norm[3:nrow(dat_intensity_norm),, drop = FALSE]
   dat_intensity_norm <- dat_intensity_norm |> dplyr::select(dplyr::all_of(sample_names$old.name))
-  colnames(dat_intensity_norm) <- paste0("Norm_", sample_names$Unique.name)
+  colnames(dat_intensity_norm) <- paste0("Raw_", sample_names$Unique.name)
   # Convert all normalized intensities to numeric
   dat_intensity_norm[] <- lapply(dat_intensity_norm, as.numeric)
 
