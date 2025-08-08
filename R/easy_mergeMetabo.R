@@ -63,8 +63,10 @@ easy_mergeMetabo <- function(dat_intensity, dat_identification, mode, score_valu
   colnames(dat_intensity_raw) <- dat_intensity_raw[2, ]   # second row contains sample names
  # dat_intensity_raw <- dat_intensity_raw[3:nrow(dat_intensity_raw), ]
   dat_intensity_raw=dat_intensity_raw[3:nrow(dat_intensity_raw),, drop = FALSE]
-  dat_intensity_raw <- dat_intensity_raw |> dplyr::select(dplyr::all_of(sample_names$old.name))
-  colnames(dat_intensity_raw) <- paste0("Norm_", sample_names$Unique.name)
+  sample_names_filtered=sample_names |> dplyr::filter(!is.na(old.name))
+  dat_intensity_raw <- dat_intensity_raw |> dplyr::select(dplyr::all_of(sample_names_filtered$old.name))
+  colnames(dat_intensity_raw) <- paste0("Norm_", sample_names_filtered$Unique.name)
+  
   # Convert all raw intensities to numeric
   dat_intensity_raw[] <- lapply(dat_intensity_raw, as.numeric)
 
@@ -75,8 +77,8 @@ easy_mergeMetabo <- function(dat_intensity, dat_identification, mode, score_valu
   colnames(dat_intensity_norm) <- dat_intensity_norm[2, ]
 #  dat_intensity_norm <- dat_intensity_norm[3:nrow(dat_intensity_norm), ]
   dat_intensity_norm=dat_intensity_norm[3:nrow(dat_intensity_norm),, drop = FALSE]
-  dat_intensity_norm <- dat_intensity_norm |> dplyr::select(dplyr::all_of(sample_names$old.name))
-  colnames(dat_intensity_norm) <- paste0("Raw_", sample_names$Unique.name)
+  dat_intensity_norm <- dat_intensity_norm |> dplyr::select(dplyr::all_of(sample_names_filtered$old.name))
+  colnames(dat_intensity_norm) <- paste0("Raw_", sample_names_filtered$Unique.name)
   # Convert all normalized intensities to numeric
   dat_intensity_norm[] <- lapply(dat_intensity_norm, as.numeric)
 
